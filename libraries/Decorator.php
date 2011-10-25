@@ -38,6 +38,12 @@ class Decorator {
 			$method = $this->_ci->router->method;
 		}
 
+		// make sure params is an array
+		if ( ! is_array($params))
+		{
+			$params = array($params);
+		}
+
 		// set the full file path to be loaded
 		$file = $this->_decorators_directory.$class.'.php';
 
