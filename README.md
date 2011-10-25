@@ -1,4 +1,4 @@
-> This place is disgusting.... You need a decorator up in here!
+> This place is disgusting... you need a decorator up in here!
 
 ## What It Is
 
@@ -38,7 +38,9 @@ Inside the decorator, add methods for retrieving and prepping data.
 		}
 	}
 
-In your controller, make a call to the library. I have been calling it where I load my views.
+In this decorator you can see that we have removed the data retrieval from the controller (`$user = $this->user_model->find()`) and the conditionals from the view (`if ($user->name == '') $user->name = 'N/A'`).
+
+In your controller, just make a call to the library. I usually call it where I load my views.
 
 	$this->load->view('users/view', $this->decorator->decorate('users', 'info', $user_id));
 
