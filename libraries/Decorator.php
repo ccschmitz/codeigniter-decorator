@@ -16,12 +16,20 @@ class Decorator {
 		log_message('debug', 'Decorator class initialized');
 	}
 
-	public function decorate($class = NULL, $method = NULL)
+	public function decorate($class = NULL, $method = NULL, $params = array())
 	{
 		// try to guess the class
 		if ( ! $class)
 		{
 			$class = $this->_ci->router->class.'_decorator';
+		}
+		else
+		{
+			// add the file extension if they didn't already
+			if ( ! strpos($class, '_decorator'))
+			{
+				$class .= '_decorator';
+			}
 		}
 
 		// try to guess the method
@@ -41,7 +49,7 @@ class Decorator {
 
 			// get the decorated data
 			$decorator = new $class();
-			return $decorator->{$method}();
+			return call_user_func_array(array($decorator, $method), $params);
 		}
 		else
 		{
