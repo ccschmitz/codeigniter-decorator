@@ -13,9 +13,9 @@ Create the directory `application/decorators` and place a file in there for each
 
 **File Name:** `application/decorators/user_decorator.php`
 
-Inside the file, add method for retrieving and prepping the data inside of the decorator file.
+Inside the decorator, add methods for retrieving and prepping data.
 
-	class User_decorator extends CI_Decorator {
+	class Users_decorator extends CI_Decorator {
 
 		public function __construct()
 		{
@@ -24,14 +24,32 @@ Inside the file, add method for retrieving and prepping the data inside of the d
 			$this->load->model('user_model');
 		}
 		
-		public function view()
+		public function info($user_id)
 		{
-			$this->user_model->find($user_id);
+			$user = $this->user_model->find($user_id);
+
+			if ($user->name == '') $user->name = 'N/A';
+			if ($user->email == '') $user->email = 'None';
+			if ($user->phone == '') $user->phone = 'None';
+
+			$view_data->user = $user;
+
+			return $view_data;
 		}
 	}
 
-Make a call to the library from your controller, I have been calling it where I load my views:
+In your controller, make a call to the library. I have been calling it where I load my views.
 
-**Inside the Controller:** `$this->load->view('users/view', $this->decorator->decorate());`
+	$this->load->view('users/view', $this->decorator->decorate('users', 'info', $user_id));
 
-The library will try to guess what decorator you want to call by using the controller and method requested, otherwise you can specify the decorator you want to use in the first parameter of `decorate()` (i.e. `$this->decorator->decorate('users/create')`).
+**Tip:** You may pass a single value as the 3rd argument as a parameter to be passed to the decorator, or you can pass an array of params.
+
+The library will try to guess what decorator you want to call by using the controller and method requested, otherwise you can specify the decorator you want to use in the first parameter and the method in the second parameter of `decorate()` (i.e. `$this->decorator->decorate('users', 'create', $params)` will call the *create* method from the *users* decorator).
+
+That's all there is to it!
+
+## Future Development
+
+If you find a bug or would like to request a feature, please submit them in the issue tracker. I haven't contributed much to the CodeIgniter community, so I'm open to suggestions on how to improve this code.
+
+Right now it's kind of a half-baked idea that I threw together, mostly because I wanted to try creating a spark. I've been using it on a couple of my projects and it has really helped clean up my code, but I know there is a lot of room for improvement.
