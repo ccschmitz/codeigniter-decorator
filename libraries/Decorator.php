@@ -55,10 +55,18 @@ class Decorator {
 
 			// setup the decorated data
 			$decorator = new $class();
-			call_user_func_array(array($decorator, $method), $params);
+			$returned_data = call_user_func_array(array($decorator, $method), $params);
 
-			// get the decorated data
-			return call_user_func(array($decorator, 'get_decorated_data'));
+			// see if the user is returning data or not
+ 			if ( ! $returned_data)
+			{
+				// grab the data from the CI_Decorator class var
+				return call_user_func(array($decorator, 'get_decorated_data'));
+			}
+			else
+			{
+				return $returned_data;
+			}
 		}
 		else
 		{
