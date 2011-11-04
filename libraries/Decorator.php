@@ -53,9 +53,12 @@ class Decorator {
 			// require the decorator
 			require($file);
 
-			// get the decorated data
+			// setup the decorated data
 			$decorator = new $class();
-			return call_user_func_array(array($decorator, $method), $params);
+			call_user_func_array(array($decorator, $method), $params);
+
+			// get the decorated data
+			return call_user_func(array($decorator, 'get_decorated_data'));
 		}
 		else
 		{
