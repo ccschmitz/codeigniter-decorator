@@ -9,7 +9,7 @@ A simple decorator library which allows you to remove a lot of data retrieval fr
 
 ## How It Works
 
-Create the directory `application/decorators` and place a file in there for each data type you want to have a decorator for. Chances are you will want to have a decorator for each model. Make sure to add the `_decorator` extension to the file name.
+Create the directory `application/decorators` and place a file in there for each data type you want to create a decorator for. Chances are you will want to have a decorator for each model. Make sure to add the `_decorator` extension to the file name.
 
 **File Name:** `application/decorators/users_decorator.php`
 
@@ -33,12 +33,12 @@ Inside the decorator, add methods for retrieving and prepping data.
 			if ($user->phone == '') $user->phone = 'None';
 
 			$view_data->user = $user;
-
-			return $view_data;
 		}
 	}
 
 In this decorator you can see that we have removed the data retrieval from the controller (`$user = $this->user_model->find()`) and the conditionals from the view (`if ($user->name == '') $user->name = 'N/A'`).
+
+You also probably noticed that we aren't returning any data and are just setting our prepped data to the *user* attribute of the *view_data* variable. `$view_data` is a class var of CI_Decorator which is automatically returned to the `decorate()` method. You can return data manually (i.e. `return $view_data`) or just set it and forget it!
 
 In your controller, just make a call to the library. I usually call it where I load my views.
 
